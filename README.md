@@ -273,6 +273,6 @@ Este projeto foi desenvolvido com o auxílio de uma Inteligência Artificial (Ge
 -   **Geração de Código:** Criação de boilerplate para componentes, serviços e testes.
 -   **Análise e Debugging:** Identificação de erros de lógica, sintaxe e integração.
 -   **Refatoração:** Sugestão de melhorias e otimizações no código.
--   **Documentação:** Geração de comentários e deste `README.md`.
+-   **Documentação:** Geração de comentários e deste `README.md`, 90% desse `README.md` foi feito pela IA
 
 A IA atuou como uma ferramenta de produtividade, acelerando o desenvolvimento e auxiliando na resolução de problemas complexos, sempre sob a supervisão e direção do desenvolvedor.
