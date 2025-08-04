@@ -227,9 +227,8 @@ cd backend
 npm install
 
 # 3. Crie um arquivo .env na raiz de /backend e adicione as seguintes variáveis:
-# Você pode encontrar essas chaves no painel do seu projeto Supabase
-# (Project Settings -> API)
-PORT=3333
+# Você pode encontrar essas chaves comitadas no stg-catalog-challenge/frontend/.env
+
 SUPABASE_URL=SUA_SUPABASE_URL
 SUPABASE_ANON_KEY=SUA_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY=SUA_SUPABASE_SERVICE_ROLE_KEY
