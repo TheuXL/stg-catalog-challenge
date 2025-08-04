@@ -1,0 +1,65 @@
+# Documentação dos Testes de Integração do Backend
+
+Este documento detalha o propósito e a cobertura de cada arquivo de teste no diretório `src/__tests__`. Os testes foram projetados para serem de integração, validando o fluxo completo da API em conjunto com um banco de dados Supabase real.
+
+Para executar todos os testes, utilize o comando na raiz da pasta `backend`:
+```bash
+npm test
+```
+
+---
+
+### 1. `00-supabase.integration.test.ts`
+
+**Propósito:** Garantir a conectividade básica e a integridade do schema do banco de dados antes que qualquer outro teste seja executado. O prefixo `00-` força sua execução em primeiro lugar.
+
+**Testes Realizados:**
+- **Carregamento de Variáveis de Ambiente:** Verifica se as chaves essenciais do Supabase (`SUPABASE_URL`, `SUPABASE_ANON_KEY`) foram carregadas do arquivo `.env`.
+- **Conexão e Leitura:** Tenta se conectar ao Supabase e realizar uma consulta simples (`select * limit 1`) na tabela `products` para confirmar que a conexão é bem-sucedida.
+- **Validação de Schema:** Verifica se um produto retornado da tabela `products` contém todas as colunas esperadas (`id`, `name`, `description`, `price`, etc.), garantindo que o schema do banco está correto.
+
+---
+
+### 2. `auth.integration.test.ts`
+
+**Propósito:** Testar todo o ciclo de vida da autenticação de um usuário, garantindo que o registro, login e recuperação de senha estejam funcionando conforme os requisitos.
+
+**Testes Realizados:**
+- **Registro de Usuário:** Utiliza um módulo de ajuda (`auth.helper.ts`) para criar um novo usuário de teste via API de administrador do Supabase antes de cada teste. O teste valida se o objeto do usuário é retornado com sucesso.
+- **Login de Usuário:** Tenta fazer login com o usuário recém-criado e verifica se um token de acesso JWT válido é retornado.
+- **Falha de Login:** Assegura que o login falhe e retorne um erro apropriado ao tentar usar uma senha incorreta.
+- **Recuperação de Senha:** Testa o endpoint `POST /api/auth/forgot-password`. Ele não verifica se o e-mail foi de fato enviado (isso é responsabilidade do Supabase), mas sim se a nossa API invoca corretamente o serviço de recuperação de senha para o e-mail fornecido.
+
+---
+
+### 3. `products.test.ts`
+
+**Propósito:** Validar todos os endpoints públicos relacionados ao catálogo de produtos. Estes testes interagem com o banco de dados real populado.
+
+**Testes Realizados:**
+- **Listagem de Produtos:** Chama `GET /api/products` e verifica se a resposta é um array com o número esperado de produtos.
+- **Busca por ID:** Chama `GET /api/products/:id` com um ID válido (ex: 1) e confirma que os dados do produto correto são retornados.
+- **Busca por Nome (Filtro):** Testa o filtro de busca via query string (`GET /api/products?search=...`) e valida se apenas os produtos correspondentes são retornados.
+- **Produto Não Encontrado:** Garante que a API retorne um status `404 Not Found` ao solicitar um produto com um ID que não existe no banco de dados.
+
+---
+
+### 4. `cart.test.ts`
+
+**Propósito:** Realizar um teste de integração completo das funcionalidades do carrinho, que exigem autenticação. Este é o teste mais complexo, pois simula o comportamento de um usuário real.
+
+**Fluxo de Teste:**
+1.  **Setup (Antes de cada teste):**
+    - Um novo usuário de teste é criado no banco de dados.
+    - O teste faz login com esse usuário para obter um token de acesso JWT real.
+    - O carrinho de compras deste usuário é limpo para garantir um estado inicial previsível.
+2.  **Cleanup (Depois de cada teste):**
+    - O usuário de teste criado é completamente removido do banco de dados.
+
+**Testes Realizados:**
+- **Proteção de Rota:** Tenta acessar `GET /api/cart` sem um token de autenticação e espera receber um status `401 Unauthorized`.
+- **Carrinho Vazio:** Acessa o carrinho com um token válido e verifica se ele está inicialmente vazio.
+- **Adicionar Item:** Adiciona um produto ao carrinho via `POST /api/cart` e confirma se o item foi adicionado corretamente.
+- **Atualizar Quantidade:** Adiciona um item e, em seguida, envia a mesma requisição com uma nova quantidade, testando a lógica de `upsert` para garantir que a quantidade seja atualizada em vez de criar um novo item.
+- **Remover Item:** Adiciona um item ao carrinho e, em seguida, o remove via `DELETE /api/cart/items/:productId`, verificando se o carrinho fica vazio depois.
+
