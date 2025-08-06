@@ -2,8 +2,15 @@
 import axios from 'axios';
 import { supabase } from '../lib/supabase';
 
+const getBaseURL = () => {
+  if (import.meta.env.PROD) {
+    return '/api';
+  }
+  return import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333/api';
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333/api',
+  baseURL: getBaseURL(),
 });
 
 // Interceptor para adicionar o token JWT em todas as requisições
