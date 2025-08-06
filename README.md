@@ -16,6 +16,9 @@ O **STG Catalog Challenge** é uma aplicação de e-commerce full-stack que simu
 O objetivo é demonstrar a construção de um sistema coeso, onde o frontend e o backend se comunicam de forma segura e eficiente, utilizando tecnologias modernas para criar uma experiência de usuário fluida e uma base de código robusta.
 
 ---
+Link do projeto 
+https://shre.ink/stg-catalog-challenge
+---
 
 ## ✨ Funcionalidades
 
