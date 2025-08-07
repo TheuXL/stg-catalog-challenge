@@ -17,7 +17,7 @@ O objetivo é demonstrar a construção de um sistema coeso, onde o frontend e o
 
 ---
 Link do projeto 
-https://shre.ink/stg-catalog-challenge
+https://stg-catalogchallenge-hof62dcjw-matheusdevs-projects-42b37b00.vercel.app/login
 ---
 
 ## ✨ Funcionalidades
